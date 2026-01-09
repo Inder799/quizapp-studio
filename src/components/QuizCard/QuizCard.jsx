@@ -1,15 +1,20 @@
-import { useAuth } from "../../context";
+import { useAuth, useQuiz } from "../../context";
 import { useNavigate } from "react-router-dom";
 
 import "./QuizCard.css";
 
-export const QuizCard = ({ category }) => {
-  const { image, title, description } = category;
+export const QuizCard = ({ quizCategory }) => {
+  const { image, title, description, category } = quizCategory;
   const { token } = useAuth();
+  const { quizDispatch } = useQuiz();
   const navigate = useNavigate();
 
   const handlePlayNowClick = () => {
     if (token) {
+      quizDispatch({
+        type: "CATEGORY",
+        payload: category,
+      });
       navigate("/quiz");
     } else {
       navigate("/auth/login");

@@ -24,7 +24,7 @@ export const Home = () => {
       <Navbar />
       <main className="main d-flex wrap gap-md align-center justify-center">
         {categories.map((category) => (
-          <QuizCard category={category} key={category.id} />
+          <QuizCard quizCategory={category} key={category.id} />
         ))}
       </main>
     </Fragment>
