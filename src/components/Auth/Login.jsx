@@ -1,7 +1,10 @@
 import "./Auth.css";
 import { useAuth } from "../../context";
+import { loginHandler } from "../../services/auth-service";
+import { useNavigate } from "react-router-dom";
 
 export const AuthLogin = () => {
+  const navigate = useNavigate();
   const { username, password, authDispatch } = useAuth();
   console.log({ username, password });
 
@@ -21,8 +24,32 @@ export const AuthLogin = () => {
 
   const handleLoginClick = (e) => {
     e.preventDefault();
-    
-  }
+    const token = loginHandler(username, password);
+    if (token) {
+      navigate("/");
+    }
+    authDispatch({
+      type: "TOKEN",
+      payload: token,
+    });
+    authDispatch({
+      type: "CLEAR_CREDENTIALS",
+    });
+  };
+
+  const handleTestCredentialsClick = () => {
+    const token = loginHandler("prakashsakari", "ps12345");
+    if (token) {
+      navigate("/");
+    }
+    authDispatch({
+      type: "TOKEN",
+      payload: token,
+    });
+    authDispatch({
+      type: "CLEAR_CREDENTIALS",
+    });
+  };
 
   return (
     <div className="d-grid">
@@ -51,6 +78,14 @@ export const AuthLogin = () => {
             </button>
           </div>
         </form>
+        <div className="">
+          <button
+            className="button login-btn btn-outline-primary btn-margin sign-up-btn"
+            onClick={handleTestCredentialsClick}
+          >
+            Login with Test Credentials
+          </button>
+        </div>
       </div>
     </div>
   );

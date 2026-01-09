@@ -1,7 +1,20 @@
+import { useAuth } from "../../context";
+import { useNavigate } from "react-router-dom";
+
 import "./QuizCard.css";
 
 export const QuizCard = ({ category }) => {
   const { image, title, description } = category;
+  const { token } = useAuth();
+  const navigate = useNavigate();
+
+  const handlePlayNowClick = () => {
+    if (token) {
+      navigate("/quiz");
+    } else {
+      navigate("/auth/login");
+    }
+  };
 
   return (
     <div className="container d-flex direction-column">
@@ -12,7 +25,10 @@ export const QuizCard = ({ category }) => {
         <h3 className="title">{title}</h3>
         <span>{description}</span>
       </div>
-      <button className="button play-now-btn btn-primary cursor">
+      <button
+        className="button play-now-btn btn-primary cursor"
+        onClick={handlePlayNowClick}
+      >
         Play Now
       </button>
     </div>

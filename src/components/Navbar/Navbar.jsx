@@ -1,6 +1,22 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context";
 
 export const Navbar = () => {
+  const { token, authDispatch } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAuthClick = () => {
+    if (token) {
+      localStorage.clear();
+      authDispatch({
+        type: "LOGOUT",
+        payload: token,
+      });
+    }
+    navigate("/auth/login");
+  };
+
   return (
     <header className="heading d-flex grow-shrink-basis align-center">
       <div className="heading-title-icon d-flex grow-shrink-basis align-center">
@@ -19,8 +35,12 @@ export const Navbar = () => {
             </Link>
           </li>
           <li className="list-item-inline">
-            <Link to="/auth/login" className="link cursor">
-              Login
+            <Link
+              to="/auth/login"
+              className="link cursor"
+              onClick={handleAuthClick}
+            >
+              {token ? "Logout" : "Login"}
             </Link>
           </li>
         </ul>
