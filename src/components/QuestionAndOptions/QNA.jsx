@@ -1,6 +1,7 @@
 import "./QNA.css";
 import { useQuiz } from "../../context";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export const QuestionAndOptions = ({ quizData }) => {
   const [currentQuiz] = quizData;
@@ -9,7 +10,8 @@ export const QuestionAndOptions = ({ quizData }) => {
   const navigate = useNavigate();
 
   const handleNextQuestionClick = () => {
-    if (index != quiz.length - 1) {
+    localStorage.setItem("index", index + 1);
+    if (index !== quiz.length - 1) {
       quizDispatch({
         type: "NEXT_QUESTION",
       });
@@ -37,6 +39,11 @@ export const QuestionAndOptions = ({ quizData }) => {
     });
     navigate("/");
   };
+
+  useEffect(() => {
+    localStorage.setItem("option", selectedOption);
+    localStorage.setItem("score", score);
+  }, [selectedOption])
 
   return (
     <main className="d-flex justify-center qns-main">

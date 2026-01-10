@@ -4,9 +4,7 @@ import axios from "axios";
 import { useQuiz } from "../../context";
 
 export const Quiz = () => {
-  const [quiz, setQuiz] = useState([]);
-  const { quizCategory } = useQuiz();
-  console.log(quizCategory);
+  const { quizCategory, quiz, quizDispatch } = useQuiz();
 
   useEffect(() => {
     (async () => {
@@ -19,7 +17,13 @@ export const Quiz = () => {
         const filteredData = data.filter(
           ({ category }) => category === quizCategory
         );
-        setQuiz(filteredData);
+        if (filteredData && filteredData.length > 0) {
+          quizDispatch({
+            type: "SET_QUIZ",
+            payload: filteredData,
+          });
+          localStorage.setItem("quiz", JSON.stringify(filteredData));
+        }
       } catch (err) {
         console.log(err);
       }
@@ -27,7 +31,7 @@ export const Quiz = () => {
   }, [quizCategory]);
   return (
     <Fragment>
-      <Navbar />
+      <Navbar route="quiz" />
       {quiz && quiz.length > 0 && <QuestionAndOptions quizData={quiz} />}
     </Fragment>
   );

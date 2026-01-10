@@ -15,6 +15,7 @@ export const QuizCard = ({ quizCategory }) => {
         type: "CATEGORY",
         payload: category,
       });
+      localStorage.setItem("category", category);
       navigate("/quiz");
     } else {
       navigate("/auth/login");

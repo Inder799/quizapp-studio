@@ -6,16 +6,36 @@ const initialState = {
   score: 0,
   quizCategory: "",
   selectedOption: "",
+  quiz: [],
 };
 
 const QuizContext = createContext();
 
 const QuizProvider = ({ children }) => {
-  const [{ index, score, quizCategory, selectedOption }, quizDispatch] =
+  const [{ index, score, quizCategory, selectedOption, quiz }, quizDispatch] =
     useReducer(quizReducer, initialState);
+
+  useEffect(() => {
+    const currentIndex = Number(localStorage.getItem("index"));
+    const currentScore = Number(localStorage.getItem("score"));
+    const currentOption = localStorage.getItem("option");
+    const currentCategory = localStorage.getItem("category");
+    const currentQuiz = JSON.parse(localStorage.getItem("quiz"));
+    localStorage.setItem("quiz", JSON.stringify(currentQuiz));
+    quizDispatch({
+      type: "INITIAL_STATE",
+      payload: {
+        currentIndex,
+        currentScore,
+        currentOption,
+        currentCategory,
+        currentQuiz,
+      },
+    });
+  }, []);
   return (
     <QuizContext.Provider
-      value={{ index, score, quizCategory, selectedOption, quizDispatch }}
+      value={{ index, score, quizCategory, selectedOption, quiz, quizDispatch }}
     >
       {children}
     </QuizContext.Provider>

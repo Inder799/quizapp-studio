@@ -5,7 +5,7 @@ import { Navbar } from "../../components";
 export const Login = () => {
   return (
     <Fragment>
-      <Navbar />
+      <Navbar route="login" />
       <AuthLogin />
     </Fragment>
   );

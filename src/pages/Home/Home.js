@@ -21,7 +21,7 @@ export const Home = () => {
 
   return (
     <Fragment>
-      <Navbar />
+      <Navbar route="home" />
       <main className="main d-flex wrap gap-md align-center justify-center">
         {categories.map((category) => (
           <QuizCard quizCategory={category} key={category.id} />
